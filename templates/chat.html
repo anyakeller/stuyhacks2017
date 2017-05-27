@@ -44,7 +44,7 @@
 					<div class="panel panel-default">
                         <div class="panel-heading" style="color:black;">Lets Talk!</div>
 						<div class="panel-body">
-							<div class="container">
+							<div class="container" id="chat">
 								<div class="row message-bubble">
 									<p class="text-muted">Me </p>
 									<span>Why are you the way you are?</span>
@@ -76,6 +76,9 @@
         <script>
 $( document ).ready(function() {
         console.log( "ready!" );
+        var nextPerson = "Me";
+        var nextLine = "Wooo";
+        $("#chat").append('<div class="row message-bubble"><p class="text-muted">'+nextPerson+'</p><p>'+nextLine+'</p></div>');
 });
         </script>
 	</body>
