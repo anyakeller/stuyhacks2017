@@ -20,38 +20,42 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/process/", methods=['POST'])
-def process():
-    # TODO: use function to process survey input into a leaning
-    leaning = 'liberal'
-    global SESSION_KEY_TOP
-    session['clientID'] = SESSION_KEY_TOP
-    SESSION_KEY_TOP += 1
-    if leaning == "liberal":
-        if len(AVAIL_CONSERVATIVES) > 0:
-            session["room"] = AVAIL_CONSERVATIVES.pop()
-            session["status"] = "connect"
-        else:
-            room = session['clientID']
-            AVAIL_LIBERALS.append(room)
-            session['room'] = room
-            session['status'] = 'wait'
-    else:
-        if len(AVAIL_LIBERALS) > 0:
-            session["room"] = AVAIL_LIBERALS.pop()
-            session["status"] = "connect"
-        else:
-            room = session['clientID']
-            AVAIL_CONSERVATIVES.append(room)
-            session['room'] = room
-            session['status'] = 'wait'
-    return redirect(url_for("chat"))
+# @app.route("/process/", methods=['POST'])
+# def process():
+#     # TODO: use function to process survey input into a leaning
+#     leaning = 'liberal'
+#     global SESSION_KEY_TOP
+#     session['clientID'] = SESSION_KEY_TOP
+#     SESSION_KEY_TOP += 1
+#     if leaning == "liberal":
+#         if len(AVAIL_CONSERVATIVES) > 0:
+#             session["room"] = AVAIL_CONSERVATIVES.pop()
+#             session["status"] = "connect"
+#         else:
+#             room = session['clientID']
+#             AVAIL_LIBERALS.append(room)
+#             session['room'] = room
+#             session['status'] = 'wait'
+#     else:
+#         if len(AVAIL_LIBERALS) > 0:
+#             session["room"] = AVAIL_LIBERALS.pop()
+#             session["status"] = "connect"
+#         else:
+#             room = session['clientID']
+#             AVAIL_CONSERVATIVES.append(room)
+#             session['room'] = room
+#             session['status'] = 'wait'
+#     return redirect(url_for("chat"))
 
 
 # Chat
 @app.route("/chat/")
 def chat():
-    session["room"] = "hella"
+    global SESSION_KEY_TOP
+    SESSION_KEY_TOP += 1
+    session["clientID"] = SESSION_KEY_TOP
+    # print "Current clientID : " + str(session["clientID"])
+    session["room"] = "test"
     session['sent_score'] = 0
     session['strikes'] = 0
     # return render_template("chat.html", status=session["status"])
