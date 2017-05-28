@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from utils import sentanalysis
 import random
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
+import cgi
 
 app = Flask(__name__)
 app.secret_key = 'Maddy says hi'
@@ -20,32 +21,49 @@ def index():
     return render_template("index.html")
 
 
-# @app.route("/process/", methods=['POST'])
-# def process():
-#     # TODO: use function to process survey input into a leaning
-#     leaning = 'liberal'
-#     global SESSION_KEY_TOP
-#     session['clientID'] = SESSION_KEY_TOP
-#     SESSION_KEY_TOP += 1
-#     if leaning == "liberal":
-#         if len(AVAIL_CONSERVATIVES) > 0:
-#             session["room"] = AVAIL_CONSERVATIVES.pop()
-#             session["status"] = "connect"
-#         else:
-#             room = session['clientID']
-#             AVAIL_LIBERALS.append(room)
-#             session['room'] = room
-#             session['status'] = 'wait'
-#     else:
-#         if len(AVAIL_LIBERALS) > 0:
-#             session["room"] = AVAIL_LIBERALS.pop()
-#             session["status"] = "connect"
-#         else:
-#             room = session['clientID']
-#             AVAIL_CONSERVATIVES.append(room)
-#             session['room'] = room
-#             session['status'] = 'wait'
-#     return redirect(url_for("chat"))
+@app.route("/process/", methods=['POST',"GET"])
+def process():
+    # TODO: use function to process survey input into a leaning
+    form = cgi.FieldStorage(environ="post")
+    points = 0
+    points = points + int(form["q1"])
+    points = points + 5 - int(form["q2"])
+    points = points + int(form["q3"])
+    points = points + int(form["q4"])
+    points = points + int(form["q5"])
+    points = points + 5 - int(form["q6"])
+    points = points + 5 - int(form["q7"])
+    points = points + 5 - int(form["q8"])
+    points = points + int(form["q9"])
+    points = points + int(form["q10"])
+    avg = points / 10.0
+    if points < 2.5:
+        leaning = "conservative"
+    else:
+        leaning = "liberal"
+
+    global SESSION_KEY_TOP
+    session['clientID'] = SESSION_KEY_TOP
+    SESSION_KEY_TOP += 1
+    if leaning == "liberal":
+        if len(AVAIL_CONSERVATIVES) > 0:
+            session["room"] = AVAIL_CONSERVATIVES.pop()
+            session["status"] = "connect"
+        else:
+            room = session['clientID']
+            AVAIL_LIBERALS.append(room)
+            session['room'] = room
+            session['status'] = 'wait'
+    else:
+        if len(AVAIL_LIBERALS) > 0:
+            session["room"] = AVAIL_LIBERALS.pop()
+            session["status"] = "connect"
+        else:
+            room = session['clientID']
+            AVAIL_CONSERVATIVES.append(room)
+            session['room'] = room
+            session['status'] = 'wait'
+    return redirect(url_for("chat"))
 
 
 # Chat
