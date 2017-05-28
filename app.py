@@ -21,11 +21,10 @@ def index():
 @app.route("/chat/")
 def chat():
     print "@@@CHAT ROUTE HAS BEEN FOUND@@@"
-    if "clientID" not in session:
-        global SESSION_KEY_TOP
-        print "###BOOO###"
-        SESSION_KEY_TOP += 1
-        session["clientID"] = SESSION_KEY_TOP
+    global SESSION_KEY_TOP
+    SESSION_KEY_TOP += 1
+    session["clientID"] = SESSION_KEY_TOP
+    print "Current clientID : " + str(session["clientID"])
     session["room"] = "test"
     print "???HI???"
     return render_template("chat.html")
