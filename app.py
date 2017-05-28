@@ -23,6 +23,7 @@ def index():
 
 @app.route("/process/", methods=['POST'])
 def process():
+    session["quiz_taken"] = True
     form = request.form
     points = 0
     points = points + int(form["q1"])
@@ -74,6 +75,9 @@ def process():
 # Chat
 @app.route("/chat/")
 def chat():
+    if not session["quiz_taken"]:
+        print "Client tired accessing chat without quiz"
+        return redirect(url_for("index"))
     global SESSION_KEY_TOP
     SESSION_KEY_TOP += 1
     session["clientID"] = SESSION_KEY_TOP
