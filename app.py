@@ -57,10 +57,13 @@ def processMsg(message):
     clientID = message['ID']
     # TODO: implement sentiment analysis functionality here
     # the messages 'parrnerKick' and 'tooMuchHate' are emitted from here
-    session['sent_score'] += sentanalysis.analyze(message["msg"])
+    msg_score = sentanalysis.analyze(message["msg"])
+    session['sent_score'] += msg_score
     emit('relayMsg', {"ID": clientID, "msg": message["msg"]}, room=room)
-    if session['sent_score'] < -3.5:
-        if session['strikes'] == 3:
+    if msg_score < -2:
+        overall_neg = session['sent_score'] < -4 and session['strikes'] >= 3
+        too_much_neg = session['strikes'] >= 6
+        if overall_neg or too_much_neg:
             # Inform the active client & partner that the client is kicked
             emit("kicked", {"ID": clientID}, room=room)
         else:

@@ -41,6 +41,13 @@ $(document).ready(function() {
     document.getElementById('msgField').value = "";
   });
 
+  // Submit message by clicking key
+  $(document).keypress(function(e) {
+    if (e.which == 13) {
+      $("#submit").click();
+    }
+  });
+
   // On receiving a relayed message from the serverf
   socket.on("relayMsg", function(data) {
     // Log that message was received
@@ -81,7 +88,7 @@ $(document).ready(function() {
   });
 
   // On being kicked from a conversation
-  socket.on("kicked", function(data){
+  socket.on("kicked", function(data) {
     // Log the message that was received
     console.log(data);
     if (data["ID"] == clientID) {
@@ -90,7 +97,7 @@ $(document).ready(function() {
       newEntry += 'Your comments have consistently been too agressive.\n'
       newEntry += 'You are being taken out of the conversation.</p></div>';
       $("#chat").append(newEntry);
-      setTimeout(function(){
+      setTimeout(function() {
         window.location = "/";
       }, 2000);
     } else {
