@@ -23,6 +23,7 @@ $(document).ready(function() {
       var socket = io();
       console.log("started socket");
       var clientID;
+      var partnerHere;
 
       // === socketio listeners
       // On connection
@@ -64,10 +65,6 @@ $(document).ready(function() {
           text: text,
           message_side: message_side
         });
-        socket.emit("sendMsg", {
-          "ID": clientID,
-          "msg": text
-        });
         message.draw();
         return $messages.animate({
           scrollTop: $messages.prop('scrollHeight')
@@ -76,10 +73,18 @@ $(document).ready(function() {
 
       // === send message events
       $('.send_message').click(function(e) {
+        socket.emit("sendMsg", {
+          "ID": clientID,
+          "msg": getMessageText()
+        });
         return sendMessage(getMessageText(), "right");
       });
       $('.message_input').keyup(function(e) {
         if (e.which === 13) {
+          socket.emit("sendMsg", {
+            "ID": clientID,
+            "msg": getMessageText()
+          });
           return sendMessage(getMessageText(), "right");
         }
       });
@@ -101,7 +106,8 @@ $(document).ready(function() {
         console.log(data);
         // Only add to window if partnerID != this client's ID
         console.log("partnerID: " + data["ID"] + "; clientID: " + clientID);
-        if (data["ID"] != clientID) {
+        if (data["ID"] != clientID && partnerHere != true) {
+          partnerHere = true;
           return sendMessage("Your partner has joined the conversation", "left");
         }
       });
@@ -111,9 +117,17 @@ $(document).ready(function() {
         // Log that message was received
         console.log(data);
         // Only add to window if partnerID != this client's ID
-        if (data["ID"] != clientID) {
+        if (data["ID"] != clientID && partnerHere == true) {
+          partnerHere = false;
           return sendMessage("Your partner has left the conversation", "left");
         }
+      });
+
+      socket.on("tooMuchHate", function(data) {
+        console.log("Too much hate, you must stop @ clientID: " + data["ID"]);
+        var newEntry = 'It seems you\'re getting too worked up!\n'
+        newEntry += 'Let\'s try keeping the discussion calm and productive.';
+        return sendMessage(newEntry);
       });
 
       // On being kicked from a conversation
@@ -123,16 +137,14 @@ $(document).ready(function() {
         if (data["ID"] == clientID) {
           newEntry = 'Your comments have consistently been too agressive.\n'
           newEntry += 'You are being taken out of the conversation.';
-          return sendMessage(newEntry, "left");
+          return sendMessage(newEntry);
           setTimeout(function() {
             window.location = "/";
           }, 2000);
         } else {
           var newEntry = 'Your partner has been taken out of the conversation for\n'
-          newEntry += 'being too aggressive';
-          return sendMessage(newEntry, "left");
-          var newEntry = '<span style="font-weight: bold;">';
-          newEntry += 'Return to the <a href="/">homepage</a>.</span>';
+          newEntry += 'being too aggressive\n';
+          newEntry += 'Return to the <a href="/">homepage</a>';
           return sendMessage(newEntry, "left");
         }
       });
@@ -141,4 +153,4 @@ $(document).ready(function() {
         socket.disconnect();
         socket.close();
       };
-    };
+    });
