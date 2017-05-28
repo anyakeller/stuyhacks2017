@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from utils import database as db
+from utils import sentanalysis
 import random
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
 
@@ -27,6 +27,8 @@ def chat():
     print "Current clientID : " + str(session["clientID"])
     session["room"] = "test"
     print "???HI???"
+    session['sent_score'] = 0
+    session['strikes'] = 0
     return render_template("chat.html")
 
 
@@ -57,7 +59,16 @@ def processMsg(message):
     clientID = message['ID']
     # TODO: implement sentiment analysis functionality here
     # the messages 'parrnerKick' and 'tooMuchHate' are emitted from here
-    emit('relayMsg', {"ID": clientID, "msg": message["msg"]}, room=room)
+    session['sent_score'] += sentanalysis.analyze(message["msg"])
+    emit('relayMsg', {"ID": clientID, "msg":message["msg"] }, room=room)
+    if session['sent_score'] < -3.5:
+        if session['strikes'] == 3:
+            socket.emit("partnerLeave",{"ID": clientID}, room=room)
+        else:
+            session['strikes'] += 1
+            socket.emit("tooMuchHate", {"ID": clientID}, room=room)
+      
+    
 
 
 @socketio.on('disconnect')
