@@ -21,6 +21,7 @@ def index():
     return render_template("index.html")
 
 
+<<<<<<< HEAD
 @app.route("/process/", methods=['POST',"GET"])
 def process():
     # TODO: use function to process survey input into a leaning
@@ -42,6 +43,16 @@ def process():
     else:
         leaning = "liberal"
 
+=======
+@app.route("/process/", methods=['POST'])
+def process():
+    # TODO: use function to process survey input into a leaning
+    # Assume that the survey data was entered
+    lib_points = 0
+    cons_points = 0
+
+    leaning = 'liberal'
+>>>>>>> 5c57588b9e2a1f8259528867f87dbdca51ae8bd5
     global SESSION_KEY_TOP
     session['clientID'] = SESSION_KEY_TOP
     SESSION_KEY_TOP += 1
@@ -77,7 +88,7 @@ def chat():
     session['sent_score'] = 0
     session['strikes'] = 0
     # return render_template("chat.html", status=session["status"])
-    return render_template("chat.html")
+    return render_template("new_chat.html")
 
 
 # === SOCKETIO LISTENERS === #
