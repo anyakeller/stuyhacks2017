@@ -20,32 +20,36 @@ def index():
     return render_template("index.html")
 
 
-# @app.route("/process/", methods=['POST'])
-# def process():
-#     # TODO: use function to process survey input into a leaning
-#     leaning = 'liberal'
-#     global SESSION_KEY_TOP
-#     session['clientID'] = SESSION_KEY_TOP
-#     SESSION_KEY_TOP += 1
-#     if leaning == "liberal":
-#         if len(AVAIL_CONSERVATIVES) > 0:
-#             session["room"] = AVAIL_CONSERVATIVES.pop()
-#             session["status"] = "connect"
-#         else:
-#             room = session['clientID']
-#             AVAIL_LIBERALS.append(room)
-#             session['room'] = room
-#             session['status'] = 'wait'
-#     else:
-#         if len(AVAIL_LIBERALS) > 0:
-#             session["room"] = AVAIL_LIBERALS.pop()
-#             session["status"] = "connect"
-#         else:
-#             room = session['clientID']
-#             AVAIL_CONSERVATIVES.append(room)
-#             session['room'] = room
-#             session['status'] = 'wait'
-#     return redirect(url_for("chat"))
+@app.route("/process/", methods=['POST'])
+def process():
+    # TODO: use function to process survey input into a leaning
+    # Assume that the survey data was entered
+    lib_points = 0
+    cons_points = 0
+
+    leaning = 'liberal'
+    global SESSION_KEY_TOP
+    session['clientID'] = SESSION_KEY_TOP
+    SESSION_KEY_TOP += 1
+    if leaning == "liberal":
+        if len(AVAIL_CONSERVATIVES) > 0:
+            session["room"] = AVAIL_CONSERVATIVES.pop()
+            session["status"] = "connect"
+        else:
+            room = session['clientID']
+            AVAIL_LIBERALS.append(room)
+            session['room'] = room
+            session['status'] = 'wait'
+    else:
+        if len(AVAIL_LIBERALS) > 0:
+            session["room"] = AVAIL_LIBERALS.pop()
+            session["status"] = "connect"
+        else:
+            room = session['clientID']
+            AVAIL_CONSERVATIVES.append(room)
+            session['room'] = room
+            session['status'] = 'wait'
+    return redirect(url_for("chat"))
 
 
 # Chat
@@ -59,7 +63,7 @@ def chat():
     session['sent_score'] = 0
     session['strikes'] = 0
     # return render_template("chat.html", status=session["status"])
-    return render_template("chat.html")
+    return render_template("new_chat.html")
 
 
 # === SOCKETIO LISTENERS === #
