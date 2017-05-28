@@ -21,11 +21,9 @@ def index():
     return render_template("index.html")
 
 
-<<<<<<< HEAD
-@app.route("/process/", methods=['POST',"GET"])
+@app.route("/process/", methods=['POST'])
 def process():
-    # TODO: use function to process survey input into a leaning
-    form = cgi.FieldStorage(environ="post")
+    form = request.form
     points = 0
     points = points + int(form["q1"])
     points = points + 5 - int(form["q2"])
@@ -38,21 +36,13 @@ def process():
     points = points + int(form["q9"])
     points = points + int(form["q10"])
     avg = points / 10.0
-    if points < 2.5:
+    print "Average: avg"
+    if avg < 3.0:
         leaning = "conservative"
     else:
         leaning = "liberal"
+    print "Leaning: " + leaning
 
-=======
-@app.route("/process/", methods=['POST'])
-def process():
-    # TODO: use function to process survey input into a leaning
-    # Assume that the survey data was entered
-    lib_points = 0
-    cons_points = 0
-
-    leaning = 'liberal'
->>>>>>> 5c57588b9e2a1f8259528867f87dbdca51ae8bd5
     global SESSION_KEY_TOP
     session['clientID'] = SESSION_KEY_TOP
     SESSION_KEY_TOP += 1
