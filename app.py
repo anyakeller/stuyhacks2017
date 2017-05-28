@@ -27,7 +27,7 @@ def process():
     global SESSION_KEY_TOP
     session['clientID'] = SESSION_KEY_TOP
     SESSION_KEY_TOP += 1
-    if leaning == liberal:
+    if leaning == "liberal":
         if len(AVAIL_CONSERVATIVES) > 0:
             session["room"] = AVAIL_CONSERVATIVES.pop()
             session["status"] = "connect"
@@ -51,9 +51,11 @@ def process():
 # Chat
 @app.route("/chat/")
 def chat():
+    session["room"] = "hella"
     session['sent_score'] = 0
     session['strikes'] = 0
-    return render_template("chat.html", status=session["status"])
+    # return render_template("chat.html", status=session["status"])
+    return render_template("chat.html")
 
 
 # === SOCKETIO LISTENERS === #
@@ -68,7 +70,7 @@ def joined():
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
     print "SERVER: A client has joined"
-    room = session["room"]
+    room = session.get("room")
     join_room(room)
     clientID = session['clientID']
     # Set the clientID of the connected client
