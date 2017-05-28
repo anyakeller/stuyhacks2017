@@ -36,17 +36,17 @@ def connect():
 
 
 @socketio.on('joined')
-def joined(data):
+def joined():
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
     print "A CLIENT HAS JOINED!!!!!"
     room = session.get('room')
     join_room(room)
     clientID = session['clientID']
-    emit('partnerJoin', str(clientID) + ' has joined the conversation.', room=room)
-    # Response to callback function defined clientside
-    print "ABOUT TO SEND CLIENTID of " + str(clientID)
-    return {"ID": clientID}
+    # Set the clientID of the connected client
+    emit('yourID', {"ID": clientID})
+    # Inform the partner about the newly joined client
+    emit('partnerJoin', {"ID": clientID}, room=room)
 
 
 @socketio.on('sendMsg')
@@ -67,7 +67,7 @@ def disconnect():
     room = session.get('room')
     leave_room(room)
     clientID = session["clientID"]
-    emit('status', clientID + ' has left the room.', room=room)
+    emit('partnerLeft', {"ID": clientID}, room=room)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

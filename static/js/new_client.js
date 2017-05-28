@@ -9,10 +9,13 @@ $(document).ready(function() {
   socket.on("connect", function() {
     console.log("connected");
     console.log("Socket ID: " + socket.id);
-    socket.emit("joined", '', function(data) {
-      clientID = data["ID"];
-      console.log("ClientID: " + clientID);
-    });
+    socket.emit("joined");
+  });
+
+  // On receiving the clientID from the server
+  socket.on("yourID", function(data) {
+    console.log("Server-provided ID: " + data["ID"]);
+    clientID = data["ID"];
   });
 
   socket.on("connect_error", function() {
@@ -43,6 +46,33 @@ $(document).ready(function() {
     if (data["ID"] != clientID) {
       var newEntry = '<div class="row message-bubble"><p class="text-muted">';
       newEntry += "Them" + '</p><p>' + data["msg"] + '</p></div>';
+      $("#chat").append(newEntry);
+    }
+  });
+
+  // On having a partner join the conversation
+  socket.on("partnerJoin", function(data) {
+    // Log that message was received
+    console.log(data);
+    // Only add to window if partnerID != this client's ID
+    console.log("partnerID: " + data["ID"] + "; clientID: " + clientID);
+    if (data["ID"] != clientID) {
+      var newEntry = '<div class="row message-bubble">';
+      newEntry += '<p style="font-weight: bold;">'
+      newEntry += 'Your partner has joined the conversation.</p></div>';
+      $("#chat").append(newEntry);
+    }
+  });
+
+  // On having a partner leave the conversation
+  socket.on("partnerLeft", function(data) {
+    // Log that message was received
+    console.log(data);
+    // Only add to window if partnerID != this client's ID
+    if (data["ID"] != clientID) {
+      var newEntry = '<div class="row message-bubble">';
+      newEntry += '<p style="font-weight: bold;">'
+      newEntry += 'Your partner has left the conversation.</p></div>';
       $("#chat").append(newEntry);
     }
   });
