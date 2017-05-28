@@ -7,28 +7,56 @@ app = Flask(__name__)
 app.secret_key = 'Maddy says hi'
 socketio = SocketIO(app, engineio_logger=True)
 
-# Globals
+
+# === GLOBALS === #
 SESSION_KEY_TOP = 0
+AVAIL_CONSERVATIVES = []
+AVAIL_LIBERALS = []
 
 
-# index
+# === ROUTES === #
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
+@app.route("/process/", methods=['POST'])
+def process():
+    # TODO: use function to process survey input into a leaning
+    leaning = 'liberal'
+    global SESSION_KEY_TOP
+    session['clientID'] = SESSION_KEY_TOP
+    SESSION_KEY_TOP += 1
+    if leaning == liberal:
+        if len(AVAIL_CONSERVATIVES) > 0:
+            session["room"] = AVAIL_CONSERVATIVES.pop()
+            session["status"] = "connect"
+        else:
+            room = session['clientID']
+            AVAIL_LIBERALS.append(room)
+            session['room'] = room
+            session['status'] = 'wait'
+    else:
+        if len(AVAIL_LIBERALS) > 0:
+            session["room"] = AVAIL_LIBERALS.pop()
+            session["status"] = "connect"
+        else:
+            room = session['clientID']
+            AVAIL_CONSERVATIVES.append(room)
+            session['room'] = room
+            session['status'] = 'wait'
+    return redirect(url_for("chat"))
+
+
 # Chat
 @app.route("/chat/")
 def chat():
-    global SESSION_KEY_TOP
-    SESSION_KEY_TOP += 1
-    session["clientID"] = SESSION_KEY_TOP
-    # print "Current clientID : " + str(session["clientID"])
-    session["room"] = "test"
     session['sent_score'] = 0
     session['strikes'] = 0
-    return render_template("chat.html")
+    return render_template("chat.html", status=session["status"])
 
+
+# === SOCKETIO LISTENERS === #
 
 @socketio.on("connect")
 def connect():
@@ -40,7 +68,7 @@ def joined():
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
     print "SERVER: A client has joined"
-    room = session.get('room')
+    room = session["room"]
     join_room(room)
     clientID = session['clientID']
     # Set the clientID of the connected client
@@ -79,6 +107,7 @@ def disconnect():
     leave_room(room)
     clientID = session["clientID"]
     emit('partnerLeft', {"ID": clientID}, room=room)
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
