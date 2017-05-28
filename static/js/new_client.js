@@ -9,13 +9,10 @@ $(document).ready(function() {
   socket.on("connect", function() {
     console.log("connected");
     console.log("Socket ID: " + socket.id);
-    socket.emit("joined", {});
-    /*
     socket.emit("joined", '', function(data) {
-      clientID = data;
-      console.log(clientID);
+      clientID = data["ID"];
+      console.log("ClientID: " + clientID);
     });
-    */
   });
 
   socket.on("connect_error", function() {

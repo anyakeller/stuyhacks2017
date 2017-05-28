@@ -44,9 +44,10 @@ def joined(data):
     room = session.get('room')
     join_room(room)
     clientID = session['clientID']
-    emit('partnerJoin', clientID + ' has joined the conversation.', room=room)
+    emit('partnerJoin', str(clientID) + ' has joined the conversation.', room=room)
     # Response to callback function defined clientside
-    #return clientID
+    print "ABOUT TO SEND CLIENTID of " + str(clientID)
+    return {"ID": clientID}
 
 
 @socketio.on('sendMsg')
