@@ -10,23 +10,47 @@
 </head>
 
 <body>
-  <div class="chat_window">
-    <ul class="messages"></ul>
-    <div class="bottom_wrapper clearfix">
-      <div class="message_input_wrapper"><input class="message_input" placeholder="Type your message here..." /></div>
-      <div class="send_message">
-        <div class="icon"></div>
-        <div class="text">Send</div>
+  <div class="container-fluid">
+    <div class="chat_window">
+      <ul class="messages"></ul>
+      <div class="bottom_wrapper clearfix">
+        <div class="message_input_wrapper"><input class="message_input" placeholder="Type your message here..." /></div>
+        <div class="send_message">
+          <div class="icon"></div>
+          <div class="text">Send</div>
+        </div>
       </div>
     </div>
+    <div class="message_template">
+      <li class="message">
+        <div class="text_wrapper">
+          <div class="text"></div>
+        </div>
+      </li>
+    </div>
   </div>
-  <div class="message_template">
-    <li class="message">
-      <div class="text_wrapper">
-        <div class="text"></div>
-      </div>
-    </li>
-  </div>
+
+  {% if session.status == "wait" %}
+  <div id="waitModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Waiting for a partner</h4>
+        </div>
+        <div class="modal-body">
+          <center>
+            <h3>Waiting for a conversation partner...</h3>
+            <p>
+              We have determined that you lean {{ session.leaning }}. Please keep this page
+              open while we search for a {{ session.opposite }}-minded partner for you to
+              converse with.
+            </p>
+          </center>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  {% endif %}
 
   <script src="/static/js/jquery.min.js"></script>
   <script src="/static/js/newest_chat.js"></script>

@@ -25,6 +25,8 @@ $(document).ready(function() {
       var clientID;
       var partnerHere;
 
+      $('#waitModal').modal("show");
+
       // === socketio listeners
       // On connection
       socket.on("connect", function() {
@@ -107,6 +109,7 @@ $(document).ready(function() {
         // Only add to window if partnerID != this client's ID
         console.log("partnerID: " + data["ID"] + "; clientID: " + clientID);
         if (data["ID"] != clientID && partnerHere != true) {
+          $('#waitModal').modal("hide");
           partnerHere = true;
           return sendMessage("Your partner has joined the conversation", "left");
         }

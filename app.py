@@ -39,8 +39,12 @@ def process():
     print "Average: avg"
     if avg < 3.0:
         leaning = "conservative"
+        opposite = "liberal"
     else:
         leaning = "liberal"
+        opposite = "conservative"
+    session["leaning"] = leaning
+    session["opposite"] = opposite
     print "Leaning: " + leaning
 
     global SESSION_KEY_TOP
