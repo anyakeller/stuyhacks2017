@@ -1,23 +1,52 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from utils import database as db
 import random
-from flask_socketio import SocketIO, emit, send
+from flask_socketio import SocketIO, emit, send, join_room, leave_room
 
 app = Flask(__name__)
 app.secret_key = 'Maddy says hi'
-socketio = SocketIO(app)
+socketio = SocketIO(app, engineio_logger=True)
+
+# Globals
+SESSION_KEY_TOP = 0
+
+
+# index
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+# Chat
+@app.route("/chat/")
+def chat():
+    print "@@@CHAT ROUTE HAS BEEN FOUND@@@"
+    if "clientID" not in session:
+        global SESSION_KEY_TOP
+        print "###BOOO###"
+        SESSION_KEY_TOP += 1
+        session["clientID"] = SESSION_KEY_TOP
+    session["room"] = "test"
+    print "???HI???"
+    return render_template("chat.html")
+
+
+@socketio.on("connect")
+def connect():
+    print "&&& CLIENT HAS CONNNECTEEEEED &&&"
 
 
 @socketio.on('joined')
-def joined():
+def joined(data):
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
+    print "A CLIENT HAS JOINED!!!!!"
     room = session.get('room')
     join_room(room)
     clientID = session['clientID']
     emit('partnerJoin', clientID + ' has joined the conversation.', room=room)
     # Response to callback function defined clientside
-    return clientID
+    #return clientID
 
 
 @socketio.on('sendMsg')
@@ -28,17 +57,17 @@ def processMsg(message):
     clientID = message['ID']
     # TODO: implement sentiment analysis functionality here
     # the messages 'parrnerKick' and 'tooMuchHate' are emitted from here
-    emit('relayMsg', {"ID": clientID, "msg":message["msg"]}, room=room)
+    emit('relayMsg', {"ID": clientID, "msg": message["msg"]}, room=room)
 
 
 @socketio.on('disconnect')
-def disconnect(message):
+def disconnect():
     """Sent by clients when they leave a room.
     A status message is broadcast to all people in the room."""
     room = session.get('room')
     leave_room(room)
     clientID = session["clientID"]
-    emit('status', clientID + ' has left the room.'}, room=room)
+    emit('status', clientID + ' has left the room.', room=room)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
