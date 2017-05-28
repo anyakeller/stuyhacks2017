@@ -6,11 +6,10 @@
 	<title>Polititalk</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-	<link rel="stylesheet" href="/static/css/chat.css">
+	
 
 	<!-- Optional theme -->
-<!--	<style>
+	<style>
 		.message-bubble {
 			padding: 10px 0px 10px 0px;
 		}
@@ -31,7 +30,7 @@
 			background-color: #3d6da7 !important;
 			color: white !important;
 		}
-	</style>-->
+	</style>
 </head>
 
 <body>
@@ -76,7 +75,6 @@
 	</div>
 
 	<script src="/static/js/jquery.min.js"></script>
-	<script src="/static/js/chat.js"></script>
 	<script src="/static/js/socket.io.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
