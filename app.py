@@ -63,7 +63,7 @@ def processMsg(message):
     emit('relayMsg', {"ID": clientID, "msg":message["msg"] }, room=room)
     if session['sent_score'] < -3.5:
         if session['strikes'] == 3:
-            socket.emit("partnerLeave",{"ID": clientID}, room=room)
+            socket.emit("partnerLeft",{"ID": clientID}, room=room)
         else:
             session['strikes'] += 1
             socket.emit("tooMuchHate", {"ID": clientID}, room=room)

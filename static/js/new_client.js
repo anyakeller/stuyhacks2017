@@ -71,12 +71,23 @@ $(document).ready(function() {
     // Only add to window if partnerID != this client's ID
     if (data["ID"] != clientID) {
       var newEntry = '<div class="row message-bubble">';
-      newEntry += '<p style="font-weight: bold;">'
+	newEntry += '<p style="font-weight: bold;">';
       newEntry += 'Your partner has left the conversation.</p></div>';
-      $("#chat").append(newEntry);
+	$("#chat").append(newEntry);
     }
+      else{
+	  var newEntry = '<div class="row message-bubble">';
+	  newEntry += '<p style="font-weight: bold;">';
+	  newEntry += 'You got kicked buddy.</p></div>';
+	  $("#chat").append(newEntry);
+      };
   });
 
+    socket.on("tooMuchHate", function(data){
+	console.log(data);
+	console.log("too much hate, you must stop");
+    });
+    
   window.onbeforeunload = function() {
     socket.disconnect();
     socket.close();
