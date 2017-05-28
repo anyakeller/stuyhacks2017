@@ -1,85 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>Polititalk</title>
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-		<!-- Optional theme -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-        <style>
-        .message-bubble 
-        {
-                padding: 10px 0px 10px 0px;
-        }
+<head>
+	<meta charset="UTF-8">
+	<title>Polititalk</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-        .message-bubble:nth-child(even) { background-color: #F5F5F5; }
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<style>
+		.message-bubble {
+			padding: 10px 0px 10px 0px;
+		}
 
-        .message-bubble > *
-        {
-                padding-left: 10px;    
-        }
+		.message-bubble:nth-child(even) {
+			background-color: #F5F5F5;
+		}
 
-        .panel-body { padding: 0px; }
+		.message-bubble>* {
+			padding-left: 10px;
+		}
 
-        .panel-heading { background-color: #3d6da7 !important; color: white !important; }
-        </style>
-	</head>
-	<body>
-		<center>
-			<nav class="navbar navbar-default">
-				<div class="container-fluid">
-					<div class="navbar-header">
-					</div>
-					<ul class="nav navbar-nav">
-						<li><a href="/">Home</a></li>
-						<li class="active"><a href="/chat">Chat <span class="sr-only">(current)</span></a></li>
-					</ul>
+		.panel-body {
+			padding: 0px;
+		}
+
+		.panel-heading {
+			background-color: #3d6da7 !important;
+			color: white !important;
+		}
+	</style>
+</head>
+
+<body>
+	<center>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
 				</div>
-			</nav>
-		</center>
-			<div class="container">
-				<div class="row">
-					<div class="panel panel-default">
-                        <div class="panel-heading" style="color:black;">Lets Talk!</div>
-						<div class="panel-body">
-							<div class="container" id="chat">
-								<div class="row message-bubble">
-									<p class="text-muted">Me </p>
-									<span>Why are you the way you are?</span>
-								</div>
-								<div class="row message-bubble">
-									<p class="text-muted">You</p>
-									<p>Because I was raised under a rock</p>
-								</div>
-							</div>
-							<div class="panel-footer">
-								<div class="input-group">
-									<input type="text" class="form-control">
-									<span class="input-group-btn">
+				<ul class="nav navbar-nav">
+					<li><a href="/">Home</a></li>
+					<li class="active"><a href="/chat">Chat <span class="sr-only">(current)</span></a></li>
+				</ul>
+			</div>
+		</nav>
+	</center>
+	<div class="container">
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading" style="color:black;">Lets Talk!</div>
+				<div class="panel-body">
+					<div class="container" id="chat">
+						<div class="row message-bubble">
+							<p class="text-muted">Me </p>
+							<span>Why are you the way you are?</span>
+						</div>
+						<div class="row message-bubble">
+							<p class="text-muted">You</p>
+							<p>Because I was raised under a rock</p>
+						</div>
+					</div>
+					<div class="panel-footer">
+						<div class="input-group">
+							<input type="text" class="form-control">
+							<span class="input-group-btn">
 										<button class="btn btn-default" type="button">Send</button>
 									</span>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
 
-            <script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-      crossorigin="anonymous"></script>
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        <script>
-$( document ).ready(function() {
-        console.log( "ready!" );
-        var nextPerson = "Me";
-        var nextLine = "Wooo";
-        $("#chat").append('<div class="row message-bubble"><p class="text-muted">'+nextPerson+'</p><p>'+nextLine+'</p></div>');
-});
-        </script>
-	</body>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.slim.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script>
+		$(document).ready(function() {
+			console.log("ready!");
+			var nextPerson = "Me";
+			var nextLine = "Wooo";
+			$("#chat").append('<div class="row message-bubble"><p class="text-muted">' + nextPerson + '</p><p>' + nextLine + '</p></div>');
+		});
+	</script>
+</body>
+
 </html>
