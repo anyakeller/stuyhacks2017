@@ -9,31 +9,57 @@
 
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/creative.css">
 
 </head>
 
 <body>
   <center>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">Start Bootstrap</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="#about">About</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#quiz">Quiz</a>
+                    </li>
+                    <li><a href="/chat">Chat</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
-          <li><a href="/chat">Chat</a></li>
-        </ul>
-      </div>
+        <!-- /.container-fluid -->
     </nav>
-    <h1>Welcome to Politalk</h1>
-    <p>
+<header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1 id="homeHeading">Welcome to Politalk</h1>
+                <hr>
+                <p>
       The goal of our site is to bring people across the political spectrum together. You may ask: how in this particular political climate can I be sympathetic to someone who holds <i>those</i> views? Through understanding the context of each other's
       perspectives, we can begin to bridge the gap between us. Using Politalk, you can connect with usersers with differing viewpoints in order to discus ideaologies. Politalk is monitored using NLTK sentiment analysis to prevent bullying and detect destructive
       language. We hope you use Polititalk constructively!
-    </p>
+                </p>
+            </div>
+        </div>
+    </header>
+
   </center>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="/static/js/creative.js">
 </body>
 
 </html>
