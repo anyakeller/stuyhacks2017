@@ -20,13 +20,11 @@ def index():
 # Chat
 @app.route("/chat/")
 def chat():
-    print "@@@CHAT ROUTE HAS BEEN FOUND@@@"
     global SESSION_KEY_TOP
     SESSION_KEY_TOP += 1
     session["clientID"] = SESSION_KEY_TOP
-    print "Current clientID : " + str(session["clientID"])
+    # print "Current clientID : " + str(session["clientID"])
     session["room"] = "test"
-    print "???HI???"
     session['sent_score'] = 0
     session['strikes'] = 0
     return render_template("chat.html")
@@ -34,14 +32,14 @@ def chat():
 
 @socketio.on("connect")
 def connect():
-    print "&&& CLIENT HAS CONNNECTEEEEED &&&"
+    print "SERVER: A client has connected"
 
 
 @socketio.on('joined')
 def joined():
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
-    print "A CLIENT HAS JOINED!!!!!"
+    print "SERVER: A client has joined"
     room = session.get('room')
     join_room(room)
     clientID = session['clientID']
@@ -60,15 +58,14 @@ def processMsg(message):
     # TODO: implement sentiment analysis functionality here
     # the messages 'parrnerKick' and 'tooMuchHate' are emitted from here
     session['sent_score'] += sentanalysis.analyze(message["msg"])
-    emit('relayMsg', {"ID": clientID, "msg":message["msg"] }, room=room)
+    emit('relayMsg', {"ID": clientID, "msg": message["msg"]}, room=room)
     if session['sent_score'] < -3.5:
         if session['strikes'] == 3:
-            socket.emit("partnerLeft",{"ID": clientID}, room=room)
+            # Inform the active client & partner that the client is kicked
+            emit("kicked", {"ID": clientID}, room=room)
         else:
             session['strikes'] += 1
-            socket.emit("tooMuchHate", {"ID": clientID}, room=room)
-      
-    
+            emit("tooMuchHate", {"ID": clientID})
 
 
 @socketio.on('disconnect')

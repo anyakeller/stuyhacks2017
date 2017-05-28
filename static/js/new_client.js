@@ -29,7 +29,10 @@ $(document).ready(function() {
     var text = document.getElementById('msgField').value
     console.log(text);
     // Send the msg to the server, identified by clientID
-    socket.emit("sendMsg", {"ID": clientID, "msg": text});
+    socket.emit("sendMsg", {
+      "ID": clientID,
+      "msg": text
+    });
     // Create the msg element and add to chat window
     var newEntry = '<div class="row message-bubble"><p class="text-muted">';
     newEntry += "Me" + '</p><p>' + text + '</p></div>';
@@ -71,23 +74,47 @@ $(document).ready(function() {
     // Only add to window if partnerID != this client's ID
     if (data["ID"] != clientID) {
       var newEntry = '<div class="row message-bubble">';
-	newEntry += '<p style="font-weight: bold;">';
+      newEntry += '<p style="font-weight: bold;">';
       newEntry += 'Your partner has left the conversation.</p></div>';
-	$("#chat").append(newEntry);
+      $("#chat").append(newEntry);
     }
-      else{
-	  var newEntry = '<div class="row message-bubble">';
-	  newEntry += '<p style="font-weight: bold;">';
-	  newEntry += 'You got kicked buddy.</p></div>';
-	  $("#chat").append(newEntry);
-      };
   });
 
-    socket.on("tooMuchHate", function(data){
-	console.log(data);
-	console.log("too much hate, you must stop");
-    });
-    
+  // On being kicked from a conversation
+  socket.on("kicked", function(data){
+    // Log the message that was received
+    console.log(data);
+    if (data["ID"] == clientID) {
+      var newEntry = '<div class="row message-bubble">';
+      newEntry += '<p style="font-weight: bold;">';
+      newEntry += 'Your comments have consistently been too agressive.\n'
+      newEntry += 'You are being taken out of the conversation.</p></div>';
+      $("#chat").append(newEntry);
+      setTimeout(function(){
+        window.location = "/";
+      }, 2000);
+    } else {
+      var newEntry = '<div class="row message-bubble">';
+      newEntry += '<p style="font-weight: bold;">';
+      newEntry += 'Your partner has been taken out of the conversation for\n'
+      newEntry += 'being too aggressive.</p></div>';
+      $("#chat").append(newEntry);
+      var newEntry = '<div class="row message-bubble">';
+      newEntry += '<p style="font-weight: bold;">';
+      newEntry += 'Return to the <a href="/">homepage</a>.</p></div>';
+      $("#chat").append(newEntry);
+    }
+  });
+
+  socket.on("tooMuchHate", function(data) {
+    console.log("Too much hate, you must stop @ clientID: " + data["ID"]);
+    var newEntry = '<div class="row message-bubble">';
+    newEntry += '<p style="font-weight: bold;">';
+    newEntry += 'It seems you\'re getting too worked up!\n'
+    newEntry += 'Let\'s try keeping the discussion calm and productive.</p></div>';
+    $("#chat").append(newEntry);
+  });
+
   window.onbeforeunload = function() {
     socket.disconnect();
     socket.close();
